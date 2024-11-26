@@ -1,0 +1,8 @@
+﻿100       http://example.com/AAA
+200       http://example.com/BBB
+300       http://example.com/CCC
+400       http://example.com/DDD
+500       http://example.com/EEE
+600       http://example.com/FFF
+700       http://example.com/GGG
+800       http://example.com/HHH

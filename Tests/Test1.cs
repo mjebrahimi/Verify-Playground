@@ -1,5 +1,6 @@
 ﻿using Microsoft.Playwright;
 using System.Diagnostics.CodeAnalysis;
+using VerifyTests.DiffPlex;
 
 //[assembly: System.Runtime.Versioning.SupportedOSPlatform("windows")]
 namespace Tests;
@@ -138,6 +139,37 @@ public partial class TestClass1 //: VerifyBase
         //await Verify(element)
         //    .ElementScreenshotOptions(new() { Quality = 50, Type = ScreenshotType.Jpeg });
     }
+
+    static List<DownloadedResponse> DownloadedResponses =
+    [
+        new("http://example.com/AAA", 100),
+        new("http://example.com/BBB", 200),
+        new("http://example.com/CCC", 300),
+        new("http://example.com/DDD", 4400),
+        new("http://example.com/EEE", 500),
+        new("http://example.com/XXX", 500),
+        new("http://example.com/FFF", 600),
+        new("http://example.com/GGG", 700),
+        new("http://example.com/HHH", 800),
+    ];
+
+    [TestMethod]
+    public async Task CompareString()
+    {
+        var text = string.Join('\n', DownloadedResponses.Select(x => $"{x.Size,-10}{x.Url}"));
+        await Verify(text)
+            //.UseDiffPlex(OutputType.Minimal)
+            ;
+    }
+
+    [TestMethod]
+    public async Task CompareDictionary()
+    {
+        var dictionary = DownloadedResponses.ToDictionary(p => p.Url, p => p.Size);
+        await Verify(dictionary);
+    }
+
+    record DownloadedResponse(string Url, int Size);
 }
 
 public static class ModuleInitializer
@@ -179,8 +211,16 @@ public static class ModuleInitializer
 
         //Compares JSON property values (NOT sensitive to property positions)
         //https://github.com/VerifyTests/Verify.Quibble
-        //VerifierSettings.UseStrictJson();
-        //VerifyQuibble.Initialize();
+        VerifierSettings.UseStrictJson();
+        VerifyQuibble.Initialize();
+
+        //Comparison of text via DiffPlex (in test logs)
+        //https://github.com/VerifyTests/Verify.DiffPlex
+        //VerifyDiffPlex.Initialize(OutputType.Full); //See repo to see their differences
+        //VerifyDiffPlex.Initialize(OutputType.Compact);
+        VerifyDiffPlex.Initialize(OutputType.Minimal);
+        //VerifierSettings.ScrubLinesContaining("DiffEngineTray");
+        //VerifierSettings.IgnoreStackTrace();
 
         DerivePathInfo((_, _, type, method) => new PathInfo(SnapshotDir, type.Name, method.Name));
     }
