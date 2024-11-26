@@ -5,10 +5,10 @@ using Shipwreck.Phash;
 using Shipwreck.Phash.Bitmaps;
 using System.Drawing;
 
-var solutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory[..AppContext.BaseDirectory.IndexOf("bin")], ".."));
-var img1 = Path.Combine(solutionDir, "img1.png");
-var img2 = Path.Combine(solutionDir, "img2.webp");
-var img11 = Path.Combine(solutionDir, "img11.png");
+var projectDir = AppContext.BaseDirectory[..AppContext.BaseDirectory.IndexOf("bin")];
+var img1 = Path.Combine(projectDir, "img1.png");
+var img2 = Path.Combine(projectDir, "img2.webp");
+var img11 = Path.Combine(projectDir, "img11.png");
 
 #region ImageHash
 //https://github.com/coenm/ImageHash
@@ -48,8 +48,8 @@ Console.WriteLine();
 //https://github.com/Codeuctivity/ImageSharp.Compare
 Console.WriteLine("============================== ImageSharp.Compare ==============================");
 
-var calc0 = Path.Combine(solutionDir, "calc0.jpg");
-var calc1 = Path.Combine(solutionDir, "calc1.jpg");
+var calc0 = Path.Combine(projectDir, "calc0.jpg");
+var calc1 = Path.Combine(projectDir, "calc1.jpg");
 
 var calcDiff = ImageSharpCompare.CalcDiff(calc0, calc1); //Must be same size
 
@@ -58,16 +58,10 @@ Console.WriteLine($"PixelErrorPercentage: {calcDiff.PixelErrorPercentage}");
 Console.WriteLine($"AbsoluteError: {calcDiff.AbsoluteError}");
 Console.WriteLine($"MeanError: {calcDiff.MeanError}");
 
-using var fileStreamDifferenceMask = File.Create(Path.Combine(solutionDir, "cacl_difference_mask.png"));
+using var fileStreamDifferenceMask = File.Create(Path.Combine(projectDir, "cacl_difference_mask.png"));
 using var maskImage = ImageSharpCompare.CalcDiffMaskImage(calc0, calc1);
 await SixLabors.ImageSharp.ImageExtensions.SaveAsPngAsync(maskImage, fileStreamDifferenceMask);
 #endregion
-
-//var a1 = @"C:\Users\mjebrahimi\Desktop\Temp\Verify-Playground\Tests\_snapshots\TestClass1.Playwright_Page.received.png";
-//var a2 = @"C:\Users\mjebrahimi\Desktop\Temp\Verify-Playground\Tests\_snapshots\TestClass1.Playwright_Page.verified.png";
-//using var xxx = File.Create(Path.Combine(solutionDir, "xxx.png"));
-//using var aaa = ImageSharpCompare.CalcDiffMaskImage(a1, a2);
-//await SixLabors.ImageSharp.ImageExtensions.SaveAsPngAsync(aaa, xxx);
 
 #region Methods
 static ulong GetAverageHash(string filename)

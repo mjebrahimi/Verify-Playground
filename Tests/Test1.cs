@@ -142,8 +142,7 @@ public partial class TestClass1 //: VerifyBase
 
 public static class ModuleInitializer
 {
-    public static readonly string SolutionDir = Path.GetFullPath(Path.Combine(AppContext.BaseDirectory[..AppContext.BaseDirectory.IndexOf("bin")], ".."));
-    public static readonly string SnapshotDir = Path.Combine(SolutionDir, "Tests", "_snapshots");
+    public static readonly string SnapshotDir = Path.Combine(AppContext.BaseDirectory[..AppContext.BaseDirectory.IndexOf("bin")], "_snapshots");
 
     [System.Runtime.CompilerServices.ModuleInitializer]
     public static void Init()
@@ -157,7 +156,7 @@ public static class ModuleInitializer
         VerifyImageHash.Initialize();
 
         //Compare similarity
-        //https://github.com/VerifyTests/Verify.ImageSharp.Compare (
+        //https://github.com/VerifyTests/Verify.ImageSharp.Compare (so so)
         //VerifyImageSharpCompare.Initialize(); //Images must be the same size
 
         //Compare pixel by pixel and similarity (not good but better in pixel by pixel)
@@ -179,6 +178,7 @@ public static class ModuleInitializer
         //VerifierSettings.InitializePlugins();
 
         //Compares JSON property values (NOT sensitive to property positions)
+        //https://github.com/VerifyTests/Verify.Quibble
         //VerifierSettings.UseStrictJson();
         //VerifyQuibble.Initialize();
 
