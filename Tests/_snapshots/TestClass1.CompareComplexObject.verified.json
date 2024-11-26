@@ -1,0 +1,10 @@
+﻿{
+  "Name": "Foo",
+  "Age": 25,
+  "Address": {
+    "Street": "123 Main St",
+    "City": "Redmond",
+    "State": "WA",
+    "Zip": 98052
+  }
+}
